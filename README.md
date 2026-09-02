@@ -33,13 +33,13 @@ Develop a professional personal resume website using only HTML.
 
 ### Files
 
-```text
+
 Practical-1/
 ├── index.html
 ├── contact.html
 ├── profile.jpg
 └── intro.mp4
-```
+
 
 ---
 
@@ -73,7 +73,7 @@ Convert a static HTML website into a visually attractive website using CSS.
 
 ### Files
 
-```text
+
 Practical-2/
 ├── index.html
 ├── menu.html
@@ -85,7 +85,7 @@ Practical-2/
 ├── biryani.jpg
 ├── dessert.jpg
 └── restaurant.jpg
-```
+
 
 ---
 
@@ -118,11 +118,11 @@ Build a modern responsive landing page.
 
 ### Files
 
-```text
+
 Practical-3/
 ├── index.html
 └── style.css
-```
+
 
 ---
 
@@ -137,7 +137,7 @@ Practical-3/
 
 ## Practical Progression
 
-```text
+
 Practical 1
 HTML5
    ↓
@@ -152,7 +152,6 @@ Practical 3
 Bootstrap + Flexbox + Media Queries
    ↓
 Responsive Web Design
-```
 
 ## How to Run
 
