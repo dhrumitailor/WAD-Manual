@@ -1,0 +1,106 @@
+/* =========================================
+   DHRUMI TAILOR PORTFOLIO - STYLE SHEET
+   Bootstrap is also used through the CDN
+   ========================================= */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Flexbox */
+.navbar-content,
+.hero-content,
+.footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.hero-content {
+    flex-wrap: wrap;
+}
+
+.profile-img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.project-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+}
+
+.project-card {
+    flex: 1 1 280px;
+}
+
+.section-title {
+    margin-bottom: 1.5rem;
+}
+
+.theme-toggle {
+    white-space: nowrap;
+}
+
+/* Dark mode */
+body.dark-mode {
+    background-color: #121212;
+    color: #f1f1f1;
+}
+
+body.dark-mode .card,
+body.dark-mode .table,
+body.dark-mode .list-group-item,
+body.dark-mode .form-control {
+    background-color: #1e1e1e;
+    color: #f1f1f1;
+}
+
+body.dark-mode .table {
+    --bs-table-bg: #1e1e1e;
+    --bs-table-color: #f1f1f1;
+}
+
+body.dark-mode .text-muted {
+    color: #bdbdbd !important;
+}
+
+body.dark-mode .form-control::placeholder {
+    color: #aaa;
+}
+
+body.dark-mode .navbar,
+body.dark-mode footer {
+    background-color: #1a1a1a !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .navbar-content,
+    .hero-content,
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-img {
+        width: 140px;
+        height: 140px;
+    }
+
+    .hero-content .text-start {
+        text-align: center !important;
+    }
+
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+}

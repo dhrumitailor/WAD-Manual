@@ -1,78 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Registration Portal</title>
 
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e3a8a;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        #confirmation {
+            margin-top: 20px;
+            padding: 15px;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .records {
+            margin-top: 35px;
+        }
+
+        .records h2 {
+            color: #1e3a8a;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #1e3a8a;
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
 
-    <header>
+    <div class="container">
+
         <h1>Student Registration Portal</h1>
-        <p>Register yourself using the form below</p>
-    </header>
 
-    <main>
+        <form id="registrationForm">
 
-        <section class="registration">
-            <h2>Registration Form</h2>
-
-            <form id="registrationForm">
-
-                <label for="name">Full Name:</label>
+            <div class="form-group">
+                <label for="name">Student Name</label>
                 <input type="text" id="name" placeholder="Enter your name">
+                <div class="error" id="nameError"></div>
+            </div>
 
-                <label for="email">Email:</label>
+            <div class="form-group">
+                <label for="email">Email</label>
                 <input type="email" id="email" placeholder="Enter your email">
+                <div class="error" id="emailError"></div>
+            </div>
 
-                <label for="phone">Phone:</label>
-                <input type="text" id="phone" placeholder="Enter your phone number">
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="text" id="phone" placeholder="Enter 10-digit phone number">
+                <div class="error" id="phoneError"></div>
+            </div>
 
-                <label for="course">Course:</label>
+            <div class="form-group">
+                <label for="course">Course</label>
                 <select id="course">
                     <option value="">Select Course</option>
-                    <option value="BE-IT">BE Information Technology</option>
-                    <option value="BE-CE">BE Computer Engineering</option>
-                    <option value="BE-CSE">BE Computer Science</option>
+                    <option value="B.E. IT">B.E. Information Technology</option>
+                    <option value="B.E. CSE">B.E. Computer Engineering</option>
+                    <option value="B.E. EC">B.E. Electronics</option>
+                    <option value="B.E. CE">B.E. Civil Engineering</option>
                 </select>
+                <div class="error" id="courseError"></div>
+            </div>
 
-                <label for="year">Year:</label>
-                <select id="year">
-                    <option value="">Select Year</option>
-                    <option value="First Year">First Year</option>
-                    <option value="Second Year">Second Year</option>
-                    <option value="Third Year">Third Year</option>
-                    <option value="Fourth Year">Fourth Year</option>
+            <div class="form-group">
+                <label for="semester">Semester</label>
+                <select id="semester">
+                    <option value="">Select Semester</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
                 </select>
+                <div class="error" id="semesterError"></div>
+            </div>
 
-                <label>Gender:</label>
+            <button type="submit">Register Student</button>
 
-                <div class="gender">
-                    <input type="radio" name="gender" value="Male">
-                    <span>Male</span>
+        </form>
 
-                    <input type="radio" name="gender" value="Female">
-                    <span>Female</span>
+        <div id="confirmation"></div>
 
-                    <input type="radio" name="gender" value="Other">
-                    <span>Other</span>
-                </div>
-
-                <button type="submit">Register</button>
-
-            </form>
-
-            <p id="message"></p>
-        </section>
-
-
-        <section class="records">
-
-            <h2>Registered Students</h2>
+        <div class="records">
+            <h2>Submitted Records</h2>
 
             <table>
                 <thead>
@@ -81,22 +185,138 @@
                         <th>Email</th>
                         <th>Phone</th>
                         <th>Course</th>
-                        <th>Year</th>
-                        <th>Gender</th>
+                        <th>Semester</th>
                     </tr>
                 </thead>
 
-                <tbody id="studentTable">
+                <tbody id="recordsTable">
                 </tbody>
-
             </table>
+        </div>
 
-        </section>
+    </div>
 
-    </main>
+    <script>
 
-    <script src="script.js"></script>
+        const form = document.getElementById("registrationForm");
+
+        const nameInput = document.getElementById("name");
+        const emailInput = document.getElementById("email");
+        const phoneInput = document.getElementById("phone");
+        const courseInput = document.getElementById("course");
+        const semesterInput = document.getElementById("semester");
+
+        const confirmation = document.getElementById("confirmation");
+        const recordsTable = document.getElementById("recordsTable");
+
+        function validateForm() {
+
+            let isValid = true;
+
+            document.querySelectorAll(".error").forEach(function(error) {
+                error.textContent = "";
+            });
+
+            if (nameInput.value.trim() === "") {
+                document.getElementById("nameError").textContent =
+                    "Name is required.";
+                isValid = false;
+            }
+
+            const emailPattern =
+                /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailPattern.test(emailInput.value.trim())) {
+                document.getElementById("emailError").textContent =
+                    "Enter a valid email address.";
+                isValid = false;
+            }
+
+            const phonePattern = /^[0-9]{10}$/;
+
+            if (!phonePattern.test(phoneInput.value.trim())) {
+                document.getElementById("phoneError").textContent =
+                    "Phone number must contain exactly 10 digits.";
+                isValid = false;
+            }
+
+            if (courseInput.value === "") {
+                document.getElementById("courseError").textContent =
+                    "Please select a course.";
+                isValid = false;
+            }
+
+            if (semesterInput.value === "") {
+                document.getElementById("semesterError").textContent =
+                    "Please select a semester.";
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function displayRecords() {
+
+            recordsTable.innerHTML = "";
+
+            const records =
+                JSON.parse(localStorage.getItem("students")) || [];
+
+            records.forEach(function(student) {
+
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+                    <td>${student.name}</td>
+                    <td>${student.email}</td>
+                    <td>${student.phone}</td>
+                    <td>${student.course}</td>
+                    <td>${student.semester}</td>
+                `;
+
+                recordsTable.appendChild(row);
+            });
+        }
+
+        form.addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            if (!validateForm()) {
+                return;
+            }
+
+            const student = {
+                name: nameInput.value.trim(),
+                email: emailInput.value.trim(),
+                phone: phoneInput.value.trim(),
+                course: courseInput.value,
+                semester: semesterInput.value
+            };
+
+            const records =
+                JSON.parse(localStorage.getItem("students")) || [];
+
+            records.push(student);
+
+            localStorage.setItem(
+                "students",
+                JSON.stringify(records)
+            );
+
+            confirmation.style.display = "block";
+
+            confirmation.textContent =
+                `Registration successful! Welcome ${student.name}. Your registration for ${student.course}, Semester ${student.semester}, has been submitted successfully.`;
+
+            form.reset();
+
+            displayRecords();
+        });
+
+        displayRecords();
+
+    </script>
 
 </body>
-
 </html>
