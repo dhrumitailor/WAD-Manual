@@ -116,18 +116,12 @@ Build a modern responsive landing page.
 * Cards
 * Responsive Navigation
 
-### Files
-
-
+Files
 Practical-3/
 ├── index.html
 └── style.css
 
-
----
-
-## Technologies Used
-
+Technologies Used
 * HTML5
 * CSS3
 * Bootstrap 5
@@ -135,23 +129,29 @@ Practical-3/
 * Responsive Web Design
 * Media Queries
 
-## Practical Progression
 
 
-Practical 1
-HTML5
-   ↓
-Structure and Content
+## Practical Set 4 | CO2, CO3
 
-Practical 2
-CSS3
-   ↓
-Styling and Visual Design
+* An interactive student registration portal developed using HTML, CSS, and JavaScript.
 
-Practical 3
-Bootstrap + Flexbox + Media Queries
-   ↓
-Responsive Web Design
+Features
+* Form and field validation
+* Dynamic confirmation message
+* Store records using Local Storage
+* Display submitted student records
+
+Concepts
+* Variables • Functions • Events • DOM • Local Storage
+
+Technologies
+* HTML5, CSS3, JavaScript
+
+Objective
+* To convert a student registration form into an interactive web application using JavaScript.
+
+
+
 
 ## How to Run
 
