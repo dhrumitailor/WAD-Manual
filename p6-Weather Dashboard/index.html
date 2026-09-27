@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px;
+            background: #eef6ff;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e3a8a;
+        }
+
+        .search {
+            display: flex;
+            gap: 10px;
+            margin: 25px 0;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        #loading {
+            text-align: center;
+            color: #2563eb;
+            display: none;
+            margin: 20px;
+        }
+
+        #error {
+            text-align: center;
+            color: #dc2626;
+            margin: 15px;
+        }
+
+        .weather {
+            text-align: center;
+            padding: 20px;
+            background: #eff6ff;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .temperature {
+            font-size: 45px;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .detail {
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .json-section {
+            margin-top: 25px;
+        }
+
+        pre {
+            background: #111827;
+            color: #e5e7eb;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            .search {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Weather Dashboard</h1>
+
+        <div class="search">
+
+            <input
+                type="text"
+                id="city"
+                placeholder="Enter city name"
+            >
+
+            <button id="searchButton">
+                Search
+            </button>
+
+        </div>
+
+        <div id="loading">
+            Loading weather data...
+        </div>
+
+        <div id="error"></div>
+
+        <div class="weather" id="weather">
+
+            <h2 id="cityName"></h2>
+
+            <div class="temperature">
+                <span id="temperature"></span>°C
+            </div>
+
+            <p id="description"></p>
+
+            <div class="details">
+
+                <div class="detail">
+                    <strong>Humidity</strong>
+                    <p id="humidity"></p>
+                </div>
+
+                <div class="detail">
+                    <strong>Wind Speed</strong>
+                    <p id="wind"></p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="json-section">
+
+            <h3>JSON Response</h3>
+
+            <pre id="jsonResponse">
+Search for a city to view the API response.
+            </pre>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        const cityInput =
+            document.getElementById("city");
+
+        const searchButton =
+            document.getElementById("searchButton");
+
+        const loading =
+            document.getElementById("loading");
+
+        const error =
+            document.getElementById("error");
+
+        const weather =
+            document.getElementById("weather");
+
+        const jsonResponse =
+            document.getElementById("jsonResponse");
+
+
+        async function getWeather() {
+
+            const city =
+                cityInput.value.trim();
+
+            if (city === "") {
+
+                error.textContent =
+                    "Please enter a city name.";
+
+                weather.style.display = "none";
+
+                return;
+            }
+
+            loading.style.display = "block";
+            error.textContent = "";
+            weather.style.display = "none";
+
+            try {
+
+                /*
+                 * Open-Meteo does not require an API key.
+                 * First, find the city's latitude and longitude.
+                 */
+
+                const locationResponse =
+                    await fetch(
+                        `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`
+                    );
+
+                if (!locationResponse.ok) {
+                    throw new Error("Unable to find the city.");
+                }
+
+                const locationData =
+                    await locationResponse.json();
+
+                if (
+                    !locationData.results ||
+                    locationData.results.length === 0
+                ) {
+                    throw new Error(
+                        "City not found. Please enter a valid city."
+                    );
+                }
+
+                const location =
+                    locationData.results[0];
+
+                /*
+                 * Fetch weather data using latitude
+                 * and longitude.
+                 */
+
+                const weatherResponse =
+                    await fetch(
+                        `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&timezone=auto`
+                    );
+
+                if (!weatherResponse.ok) {
+                    throw new Error(
+                        "Unable to fetch weather data."
+                    );
+                }
+
+                const data =
+                    await weatherResponse.json();
+
+                displayWeather(
+                    location,
+                    data
+                );
+
+                /*
+                 * Display complete JSON response.
+                 */
+
+                jsonResponse.textContent =
+                    JSON.stringify(data, null, 2);
+
+            }
+
+            catch (err) {
+
+                error.textContent =
+                    err.message;
+
+                weather.style.display =
+                    "none";
+
+                jsonResponse.textContent =
+                    "No valid response available.";
+
+            }
+
+            finally {
+
+                loading.style.display =
+                    "none";
+            }
+        }
+
+
+        function displayWeather(
+            location,
+            data
+        ) {
+
+            document.getElementById("cityName")
+                .textContent =
+                `${location.name}, ${location.country}`;
+
+            document.getElementById("temperature")
+                .textContent =
+                data.current.temperature_2m;
+
+            document.getElementById("humidity")
+                .textContent =
+                `${data.current.relative_humidity_2m}%`;
+
+            document.getElementById("wind")
+                .textContent =
+                `${data.current.wind_speed_10m} km/h`;
+
+            document.getElementById("description")
+                .textContent =
+                getWeatherDescription(
+                    data.current.weather_code
+                );
+
+            weather.style.display =
+                "block";
+        }
+
+
+        function getWeatherDescription(code) {
+
+            if (code === 0) {
+                return "Clear Sky";
+            }
+
+            if (code >= 1 && code <= 3) {
+                return "Partly Cloudy";
+            }
+
+            if (code >= 45 && code <= 48) {
+                return "Foggy";
+            }
+
+            if (code >= 51 && code <= 67) {
+                return "Rain";
+            }
+
+            if (code >= 71 && code <= 77) {
+                return "Snow";
+            }
+
+            if (code >= 80 && code <= 82) {
+                return "Rain Showers";
+            }
+
+            if (code >= 95) {
+                return "Thunderstorm";
+            }
+
+            return "Unknown Weather";
+        }
+
+
+        searchButton.addEventListener(
+            "click",
+            getWeather
+        );
+
+
+        cityInput.addEventListener(
+            "keypress",
+            function(event) {
+
+                if (event.key === "Enter") {
+                    getWeather();
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
